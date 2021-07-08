@@ -1,0 +1,7 @@
+---
+- name: Utopia Repository setup
+  hosts: repo_master
+  become: yes
+  roles:
+    - setup-aptly
+    - setup-uploader-accounts

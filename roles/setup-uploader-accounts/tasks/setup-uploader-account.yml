@@ -1,0 +1,21 @@
+
+- name: "Create account {{ userdef.user }}"
+  block:
+  - name: "Create account {{ userdef.user }}"
+    user:
+      name: "{{ userdef.user }}"
+      comment: "{{ userdef.display }}"
+      group: "{{ aptly_uploaders_group }}"
+      password_lock: true
+
+  - name: "Set up SSH authorized keys for {{ userdef.user }}"
+    authorized_key:
+      user: "{{ userdef.user }}"
+      state: present
+      key: "{{ lookup('file', sshkey) }}"
+    with_fileglob:
+      - "{{ userdef.user }}-*.pub"
+    loop_control:
+      loop_var: sshkey
+    ignore_errors: "{{ ansible_check_mode }}"
+  become: yes

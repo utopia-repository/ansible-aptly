@@ -2,9 +2,19 @@ aptly_service_user: aptly
 aptly_service_group: aptly
 
 # For uploads into aptly incoming folder
-aptly_uploaders_group: aptly
+aptly_uploaders_group: aptly-uploaders
+aptly_uploaders:
+  - { user: 'james-urepo', display: 'James Lu' }
+  - { user: 'unit193',     display: 'Unit 193' }
 
 # Note: much of utopia-scripts is hardcoded to assume /srv/aptly so far...
 aptly_base_path: "/srv/aptly"
-# Path for incoming uploads
+
+# Paths for incoming uploads
 aptly_incoming_path: "/srv/aptly-incoming"
+aptly_incoming_dists:
+- sid
+- sid-imports
+- sid-meta
+- buster
+- buster-imports

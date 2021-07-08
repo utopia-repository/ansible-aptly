@@ -5,15 +5,43 @@
     mode: "0640"
     group: "{{ aptly_service_group }}"
 
-- name: Create aptly incoming folder
+- name: Create aptly incoming root
   file:
     path: "{{ aptly_incoming_path }}"
     state: directory
-    # Make the incoming folder setgid and owned by aptly so that
-    # 1) uploaders can write
-    # 2) aptly can automatically delete successfully imported files
+    # The ChrootDirectory root passed into sshd must be root-owned
+    owner: "root"
+    group: "root"
+    mode: "0755"
+
+- name: Create aptly incoming folders
+  file:
+    path: "{{ aptly_incoming_path }}/{{ item }}"
+    state: directory
+    # Make sure this is owned by aptly so that it can delete successfully imported files
     owner: "{{ aptly_service_user }}"
     group: "{{ aptly_uploaders_group }}"
-    mode: "2770"
+    mode: "0775"
+  loop: "{{ aptly_incoming_dists }}"
 
-# TODO: actually create accounts for uploaders
+- name: Configure SSH for uploader accounts
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    block: |
+      Match Group {{ aptly_uploaders_group }}
+        ForceCommand internal-sftp
+        ChrootDirectory {{ aptly_incoming_path }}
+        PasswordAuthentication no
+        PermitTunnel no
+        AllowAgentForwarding no
+        AllowTcpForwarding no
+        X11Forwarding no
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for utopia-openinfra"
+    validate: "/usr/sbin/sshd -tf %s"
+  notify: Reload sshd
+
+- name: Set up uploaders accounts
+  include_tasks: setup-uploader-account.yml
+  loop: "{{ aptly_uploaders }}"
+  loop_control:
+    loop_var: userdef
