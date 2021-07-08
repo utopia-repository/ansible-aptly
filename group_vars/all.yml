@@ -1,0 +1,10 @@
+aptly_service_user: aptly
+aptly_service_group: aptly
+
+# For uploads into aptly incoming folder
+aptly_uploaders_group: aptly
+
+# Note: much of utopia-scripts is hardcoded to assume /srv/aptly so far...
+aptly_base_path: "/srv/aptly"
+# Path for incoming uploads
+aptly_incoming_path: "/srv/aptly-incoming"

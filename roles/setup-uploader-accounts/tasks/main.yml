@@ -1,0 +1,19 @@
+- name: Template aptly incoming uploaders config
+  copy:
+    src: "aptly-uploaders.conf"
+    dest: "/etc/aptly-uploaders.conf"
+    mode: "0640"
+    group: "{{ aptly_service_group }}"
+
+- name: Create aptly incoming folder
+  file:
+    path: "{{ aptly_incoming_path }}"
+    state: directory
+    # Make the incoming folder setgid and owned by aptly so that
+    # 1) uploaders can write
+    # 2) aptly can automatically delete successfully imported files
+    owner: "{{ aptly_service_user }}"
+    group: "{{ aptly_uploaders_group }}"
+    mode: "2770"
+
+# TODO: actually create accounts for uploaders

@@ -1,0 +1,42 @@
+- name: Install aptly and packaging prerequisites
+  apt:
+    package:
+    - aptly
+    - build-essential
+    - devscripts
+    - gnupg
+    - graphviz
+    state: present
+    install_recommends: yes
+    update_cache: true
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Create aptly group
+  group:
+    name: "{{ aptly_service_group }}"
+    state: present
+
+- name: Create aptly uploaders group
+  group:
+    name: "{{ aptly_uploaders_group }}"
+    state: present
+
+- name: Create aptly service user
+  user:
+    name: "{{ aptly_service_user }}"
+    group: "{{ aptly_service_group }}"
+    groups: "{{ aptly_uploaders_group }}"
+    password_lock: true
+
+- name: Template aptly.conf
+  template:
+    src: "aptly.conf.j2"
+    dest: "/etc/aptly.conf"
+    mode: "0644"
+
+- name: Create aptly data folder
+  file:
+    path: "{{ aptly_base_path }}"
+    state: directory
+    owner: "{{ aptly_service_user }}"
+    group: "{{ aptly_service_group }}"
