@@ -1,0 +1,76 @@
+{% macro ssl_config() %}
+    ssl_certificate {{ nginx_ssl_cert }};
+    ssl_certificate_key {{ nginx_ssl_key }};
+    include snippets/nginx-ssl.conf;
+{% endmacro -%}
+
+server {
+    listen 80;
+    listen [::]:80;
+{% if use_https %}
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    {{ ssl_config() }}
+{% endif %}
+
+{% for server in nginx_server_names %}
+    server_name {{ server }};
+{% endfor %}
+{# TODO: stop hardcoding log locations #}
+    access_log /var/log/nginx/urepo-access.log;
+    error_log /var/log/nginx/urepo-error.log;
+    autoindex on;
+
+    root {{ aptly_base_path }}/public;
+    index index.html index.htm;
+
+    location /pool {
+        root {{ aptly_base_path }}/public;
+
+        location ~* \.(dsc|changelog)$ {
+            default_type text/plain;
+        }
+    }
+    location /dists {
+        root {{ aptly_base_path }}/public;
+
+        location ~* (Release|Packages|Sources)$ {
+            default_type text/plain;
+        }
+    }
+    location /.well-known {
+        root /var/www/html;
+    }
+
+    location /.git {
+        deny all;
+    }
+
+    location ~* \.changelog$ {
+        default_type text/plain;
+    }
+    error_page 404 /404.html;
+}
+
+{% if nginx_server_names_redirect %}
+{# Redirect from root and www. to deb.* #}
+server {
+    listen 80;
+    listen [::]:80;
+
+{% if use_https %}
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    {{ ssl_config() }}
+{% endif %}
+
+{% for server in nginx_server_names_redirect %}
+    server_name {{ server }};
+{% endfor %}
+
+    access_log /var/log/nginx/urepo-access.log;
+    error_log /var/log/nginx/urepo-error.log;
+
+    rewrite ^ $scheme://{{ nginx_server_names[0] }}$request_uri? redirect;
+}
+{% endif %}

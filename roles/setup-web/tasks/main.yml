@@ -1,0 +1,7 @@
+- name: Setup nginx web server
+  include_role:
+    name: apps_nginx
+  vars:
+    nginx_site:
+      src: nginx-urepo.conf.j2
+      dst: nginx-urepo.conf

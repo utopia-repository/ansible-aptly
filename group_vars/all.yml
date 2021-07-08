@@ -18,3 +18,14 @@ aptly_incoming_dists:
 - sid-meta
 - buster
 - buster-imports
+
+# server_name entries for nginx
+nginx_server_names:
+  - deb.utopia-repository.org
+  - ni.deb.utopia-repository.org  # nightlies
+nginx_server_names_redirect:
+  - utopia-repository.org
+  - www.utopia-repository.org
+nginx_use_https: true
+nginx_ssl_cert: /etc/ssl/urepo.crt
+nginx_ssl_key: /etc/ssl/urepo.key
