@@ -1,15 +1,14 @@
 aptly_service_user: aptly
 aptly_service_group: aptly
 
+# Note: much of utopia-scripts is hardcoded to assume /srv/aptly so far...
+aptly_base_path: "/srv/aptly"
+
 # For uploads into aptly incoming folder
 aptly_uploaders_group: aptly-uploaders
 aptly_uploaders:
   - { user: 'james-urepo', display: 'James Lu' }
   - { user: 'unit193',     display: 'Unit 193' }
-
-# Note: much of utopia-scripts is hardcoded to assume /srv/aptly so far...
-aptly_base_path: "/srv/aptly"
-
 # Paths for incoming uploads
 aptly_incoming_path: "/srv/aptly-incoming"
 aptly_incoming_dists:
@@ -29,3 +28,9 @@ nginx_server_names_redirect:
 nginx_use_https: true
 nginx_ssl_cert: /etc/ssl/urepo.crt
 nginx_ssl_key: /etc/ssl/urepo.key
+
+# (optional) nginx web root for the repo; use this if you want to have a more friendly homepage
+# dists/ and pool/ (used for the actual apt contents) are aliased into "{{ aptly_base_path }}/public",
+# so they should work out of the box
+nginx_web_base_path: /srv/aptly-web
+nginx_web_git_repo: https://github.com/utopia-repository/website

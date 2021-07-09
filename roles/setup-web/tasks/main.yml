@@ -1,3 +1,15 @@
+- name: Create nginx web root
+  file:
+    path: "{{ nginx_web_base_path }}"
+    state: directory
+  when: nginx_web_base_path | default("")
+
+- name: Clone website repository
+  git:
+    repo: "{{ nginx_web_git_repo }}"
+    dest: "{{ nginx_web_base_path }}"
+  when: (nginx_web_base_path | default("")) and (nginx_web_git_repo | default(""))
+
 - name: Setup nginx web server
   include_role:
     name: apps_nginx

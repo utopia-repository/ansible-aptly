@@ -3,11 +3,11 @@
     ssl_certificate_key {{ nginx_ssl_key }};
     include snippets/nginx-ssl.conf;
 {% endmacro -%}
-
+{% set repo_root = aptly_base_path + "/public" %}
 server {
     listen 80;
     listen [::]:80;
-{% if use_https %}
+{% if nginx_use_https %}
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
     {{ ssl_config() }}
@@ -21,18 +21,18 @@ server {
     error_log /var/log/nginx/urepo-error.log;
     autoindex on;
 
-    root {{ aptly_base_path }}/public;
+    root {{ nginx_web_base_path | default(repo_root) }};
     index index.html index.htm;
 
     location /pool {
-        root {{ aptly_base_path }}/public;
+        root {{ repo_root }};
 
         location ~* \.(dsc|changelog)$ {
             default_type text/plain;
         }
     }
     location /dists {
-        root {{ aptly_base_path }}/public;
+        root {{ repo_root }};
 
         location ~* (Release|Packages|Sources)$ {
             default_type text/plain;
@@ -58,7 +58,7 @@ server {
     listen 80;
     listen [::]:80;
 
-{% if use_https %}
+{% if nginx_use_https %}
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
     {{ ssl_config() }}
