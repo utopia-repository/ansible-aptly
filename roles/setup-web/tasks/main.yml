@@ -17,3 +17,4 @@
     nginx_site:
       src: nginx-urepo.conf.j2
       dst: nginx-urepo.conf
+  ignore_errors: true

@@ -5,4 +5,6 @@
   roles:
     - setup-aptly
     - setup-uploader-accounts
+    - role: setup-web-certpush
+      when: nginx_use_https
     - setup-web
