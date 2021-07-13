@@ -1,0 +1,5 @@
+- name: Reload rsync
+  service:
+    name: rsync
+    # reloaded doesn't seem to be implemented
+    state: restarted

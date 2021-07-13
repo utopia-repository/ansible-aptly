@@ -20,5 +20,5 @@ See `hosts.yml` and `group_vars/all.yml` for detailed configuration.
 
 ## TODO
 
-- Mirroring
+- Mirroring via rsync
 - Nightlies autobuilder bootstrap

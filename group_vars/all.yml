@@ -1,3 +1,4 @@
+branding_name: "Utopia Repository"
 aptly_service_user: aptly
 aptly_service_group: aptly
 
@@ -40,3 +41,15 @@ nginx_ssl_key: "{{ nginx_ssl_dir }}/privkey.pem"
 # so they should work out of the box
 nginx_web_base_path: /srv/aptly-web
 nginx_web_git_repo: https://github.com/utopia-repository/website
+
+# Whether to enable mirroring with rsync
+rsync_mirroring: true
+rsync_user: "{{ aptly_service_user }}"
+rsync_pass: !vault |
+  $ANSIBLE_VAULT;1.1;AES256
+  33656361663866633765666337376338626635363063303964626338343632323365626465626339
+  3936323230393166663061353533393762666637323363300a356262663365343835306261363739
+  31316335316266663366336461393266393936666665663237306664323964663132393934616132
+  3961623533383462620a616261636533636464633738396662323339663265373132616537666464
+  66353730323835363263313566633032383534613931636263323335623834633630
+rsync_master_host: mirror-master.utopia-repository.org

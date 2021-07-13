@@ -1,0 +1,37 @@
+- name: Install rsync daemon
+  apt:
+    package: rsync
+    state: present
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Generate rsyncd config
+  set_fact:
+    _rsyncd_config: "{{ lookup('template', 'templates/rsyncd.conf.j2') }}"
+
+- name: Write rsyncd config
+  blockinfile:
+    dest: "/etc/rsyncd.conf"
+    create: yes
+    content: '{{ _rsyncd_config }}'
+    insertafter: EOF
+    state: present
+    #backup: yes
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for utopia-openinfra"
+  notify:
+  - "Reload rsync"
+
+- name: Write rsyncd secrets file
+  template:
+    src: "rsyncd-aptly.secrets.j2"
+    dest: "/etc/rsyncd-aptly.secrets"
+    mode: "0600"
+    owner: root
+    group: root
+  notify:
+  - "Reload rsync"
+
+- name: Start rsync daemon
+  service:
+    name: rsync
+    state: started
+    enabled: yes

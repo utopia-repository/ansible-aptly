@@ -5,6 +5,11 @@
   roles:
     - setup-aptly
     - setup-uploader-accounts
+
     - role: setup-web-certpush
       when: nginx_use_https
+
     - setup-web
+
+    - role: setup-rsync-server
+      when: rsync_mirroring

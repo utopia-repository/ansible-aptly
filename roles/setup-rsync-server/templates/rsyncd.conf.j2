@@ -1,0 +1,25 @@
+{% set secrets_file = "/etc/rsyncd-aptly.secrets" %}
+{% macro write_block(name, path, desc) %}
+[{{ name }}]
+	comment = {{ desc }}
+	path = {{ path }}
+	use chroot = yes
+	read only = yes
+	list = yes
+	uid = {{ aptly_service_user }}
+	gid = {{ aptly_service_user }}
+	auth users = {{ rsync_user }}
+	secrets file = {{ secrets_file }}
+	timeout = 600
+	refuse options = checksum dry-run
+	dont compress = *.gz *.tgz *.zip *.z *.rpm *.deb *.iso *.bz2 *.tbz *.xz *.txz
+{% endmacro %}
+
+{{ write_block("aptly-master", aptly_base_path, branding_name + " master" ) }}
+
+{{ write_block("aptly-incoming", aptly_incoming_path, branding_name + " incoming files" ) }}
+
+{% if nginx_web_base_path | default("") %}
+{{ write_block("aptly-web", nginx_web_base_path, branding_name + " static web files" ) }}
+{% endif %}
+
