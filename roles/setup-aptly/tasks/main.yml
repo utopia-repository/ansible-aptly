@@ -51,3 +51,9 @@
     owner: "{{ aptly_service_user }}"
     group: "{{ aptly_service_group }}"
     mode: "0700"
+
+- name: Clone utopia-scripts repo
+  git:
+    repo: "https://github.com/utopia-repository/utopia-scripts/"
+    dest: "{{ aptly_user.home }}/utopia-scripts"
+  become_user: "{{ aptly_service_user }}"
