@@ -2,6 +2,8 @@
   file:
     path: "{{ nginx_web_base_path }}"
     state: directory
+    owner: "{{ aptly_service_user }}"
+    group: "{{ aptly_service_group }}"
   when: nginx_web_base_path | default("")
 
 - name: Clone website repository
@@ -9,6 +11,7 @@
     repo: "{{ nginx_web_git_repo }}"
     dest: "{{ nginx_web_base_path }}"
   when: (nginx_web_base_path | default("")) and (nginx_web_git_repo | default(""))
+  become_user: "{{ aptly_service_user }}"
 
 - name: Setup nginx web server
   include_role:
