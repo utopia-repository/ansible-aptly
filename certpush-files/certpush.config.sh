@@ -21,6 +21,7 @@ declare -A TARGET_PATHS=()
 
 # List of DNS names to add to all servers (Round robin addresses)
 POOL_NAMES=()
+POOL_NAMES+=(staging.utopia-repository.org)
 POOL_NAMES+=(deb.utopia-repository.org)
 POOL_NAMES+=(ni.deb.utopia-repository.org)
 POOL_NAMES+=(utopia-repository.org)

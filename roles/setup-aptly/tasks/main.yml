@@ -27,6 +27,7 @@
     group: "{{ aptly_service_group }}"
     groups: "{{ aptly_uploaders_group }}"
     password_lock: true
+  register: aptly_user
 
 - name: Template aptly.conf
   template:
@@ -40,3 +41,13 @@
     state: directory
     owner: "{{ aptly_service_user }}"
     group: "{{ aptly_service_group }}"
+
+# aptly's backend expects this to exist, even when using a test repo with signing disabled!
+# Note: configuring the actual key is out of the scope for this playbook
+- name: Create gnupg home dir
+  file:
+    path: "{{ aptly_user.home }}/.gnupg"
+    state: directory
+    owner: "{{ aptly_service_user }}"
+    group: "{{ aptly_service_group }}"
+    mode: "0700"
