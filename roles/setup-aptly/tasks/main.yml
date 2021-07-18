@@ -6,6 +6,10 @@
     - devscripts
     - gnupg
     - graphviz
+    # Used by automation scripts
+    - python3-requests
+    - python3-requests-unixsocket
+    - python3-yaml
     state: present
     install_recommends: yes
     update_cache: true
@@ -37,3 +41,4 @@
     repo: "https://github.com/utopia-repository/utopia-scripts/"
     dest: "{{ _aptly_user.home }}/utopia-scripts"
   become_user: "{{ aptly_service_user }}"
+  ignore_errors: true
