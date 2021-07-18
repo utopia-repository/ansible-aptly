@@ -11,7 +11,7 @@ KEY_NAME="privkey.pem"
 
 # List of DNS names to push to each server - addresses for each server are comma separated
 declare -A CERTPUSH_SERVERS=()
-CERTPUSH_SERVERS[staging.utopia-repository.org]="staging.utopia-repository.org"
+CERTPUSH_SERVERS[deb-master.utopia-repository.org]="deb-master.utopia-repository.org"
 
 # Server specific scp options
 declare -A OPTIONS=()
@@ -21,7 +21,6 @@ declare -A TARGET_PATHS=()
 
 # List of DNS names to add to all servers (Round robin addresses)
 POOL_NAMES=()
-POOL_NAMES+=(staging.utopia-repository.org)
 POOL_NAMES+=(deb.utopia-repository.org)
 POOL_NAMES+=(ni.deb.utopia-repository.org)
 POOL_NAMES+=(utopia-repository.org)
