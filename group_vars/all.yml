@@ -21,7 +21,6 @@ aptly_incoming_dists:
 
 # server_name entries for nginx
 nginx_server_names:
-  - "{{ inventory_hostname }}"
   - deb.utopia-repository.org
   - ni.deb.utopia-repository.org  # nightlies
 nginx_server_names_redirect:

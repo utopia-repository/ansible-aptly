@@ -13,6 +13,7 @@ server {
     {{ ssl_config() }}
 {% endif %}
 
+    server_name {{ inventory_hostname }};
 {% for server in nginx_server_names %}
     server_name {{ server }};
 {% endfor %}
