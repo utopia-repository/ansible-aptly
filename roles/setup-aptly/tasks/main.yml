@@ -11,23 +11,10 @@
     update_cache: true
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Create aptly group
-  group:
-    name: "{{ aptly_service_group }}"
-    state: present
-
 - name: Create aptly uploaders group
   group:
     name: "{{ aptly_uploaders_group }}"
     state: present
-
-- name: Create aptly service user
-  user:
-    name: "{{ aptly_service_user }}"
-    group: "{{ aptly_service_group }}"
-    groups: "{{ aptly_uploaders_group }}"
-    password_lock: true
-  register: aptly_user
 
 - name: Template aptly.conf
   template:
@@ -35,18 +22,11 @@
     dest: "/etc/aptly.conf"
     mode: "0644"
 
-- name: Create aptly data folder
-  file:
-    path: "{{ aptly_base_path }}"
-    state: directory
-    owner: "{{ aptly_service_user }}"
-    group: "{{ aptly_service_group }}"
-
 # aptly's backend expects this to exist, even when using a test repo with signing disabled!
 # Note: configuring the actual key is out of the scope for this playbook
 - name: Create gnupg home dir
   file:
-    path: "{{ aptly_user.home }}/.gnupg"
+    path: "{{ _aptly_user.home }}/.gnupg"
     state: directory
     owner: "{{ aptly_service_user }}"
     group: "{{ aptly_service_group }}"
@@ -55,5 +35,5 @@
 - name: Clone utopia-scripts repo
   git:
     repo: "https://github.com/utopia-repository/utopia-scripts/"
-    dest: "{{ aptly_user.home }}/utopia-scripts"
+    dest: "{{ _aptly_user.home }}/utopia-scripts"
   become_user: "{{ aptly_service_user }}"

@@ -3,6 +3,7 @@
   hosts: repo_master
   become: yes
   roles:
+    - setup-service-account
     - setup-aptly
     - setup-uploader-accounts
 

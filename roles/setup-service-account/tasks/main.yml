@@ -1,0 +1,19 @@
+- name: Create aptly group
+  group:
+    name: "{{ aptly_service_group }}"
+    state: present
+
+- name: Create aptly service user
+  user:
+    name: "{{ aptly_service_user }}"
+    group: "{{ aptly_service_group }}"
+    groups: "{{ aptly_uploaders_group }}"
+    password_lock: true
+  register: _aptly_user
+
+- name: Create aptly data folder
+  file:
+    path: "{{ aptly_base_path }}"
+    state: directory
+    owner: "{{ aptly_service_user }}"
+    group: "{{ aptly_service_group }}"
