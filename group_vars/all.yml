@@ -19,6 +19,11 @@ aptly_incoming_dists:
 - buster
 - buster-imports
 
+# Whether to enable the aptly api server
+aptly_api: true
+aptly_api_socket: "{{ aptly_base_path }}/aptly.sock"
+aptly_api_umask: "007" # rw-rw----
+
 # server_name entries for nginx
 nginx_server_names:
   - deb.utopia-repository.org

@@ -1,0 +1,6 @@
+- name: Start aptly-api service
+  systemd:
+    name: aptly-api.service
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

@@ -26,6 +26,14 @@
     dest: "/etc/aptly.conf"
     mode: "0644"
 
+- name: Template aptly-api.service
+  template:
+    src: "aptly-api.service.j2"
+    dest: "/etc/systemd/system/aptly-api.service"
+    mode: "0644"
+  notify: Start aptly-api service
+  when: aptly_api|default(True)
+
 # aptly's backend expects this to exist, even when using a test repo with signing disabled!
 # Note: configuring the actual key is out of the scope for this playbook
 - name: Create gnupg home dir
