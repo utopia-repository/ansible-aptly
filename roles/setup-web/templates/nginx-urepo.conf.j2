@@ -22,7 +22,7 @@ server {
     error_log /var/log/nginx/urepo-error.log;
     autoindex on;
 
-    root {{ nginx_web_base_path | default(repo_root) }};
+    root {{ nginx_web_base_path | default(repo_root, true) }};
     index index.html index.htm;
 
     location /pool {

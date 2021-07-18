@@ -8,7 +8,7 @@ sync_target() {
 
     echo ""
     echo "Writing last synced time to $outdir/.lastsync"
-    date -Ru | tee "$outdir/public/.lastsync"
+    date -Ru | tee "$outdir/.lastsync"
 }
 
 sync_target "aptly-master" "{{ aptly_base_path }}"

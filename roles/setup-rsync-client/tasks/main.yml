@@ -4,10 +4,46 @@
     state: present
   ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Template utopia-sync.sh
+- name: Template repository sync script
   template:
     src: "utopia-sync.sh.j2"
     dest: "{{ _aptly_user.home }}/utopia-sync.sh"
+    owner: "{{ aptly_service_user }}"
+    group: "{{ aptly_service_group }}"
     mode: "0755"
 
-# TODO: cron job
+- name: Write rsync password
+  copy:
+    content: "{{ rsync_pass }}"
+    dest: "{{ _aptly_user.home }}/.rsync-aptly.key"
+    owner: "{{ aptly_service_user }}"
+    group: "{{ aptly_service_group }}"
+    mode: "0600"
+
+- name: Repository sync script first-run
+  command:
+    cmd: "{{ _aptly_user.home }}/utopia-sync.sh"
+  args:
+    creates: "{{ aptly_base_path }}/.lastsync"
+  register: _utopia_sync_run
+  become_user: "{{ aptly_service_user }}"
+  async: 1200  # 20 minutes
+  poll: 3
+
+- name: Print repository sync script output
+  debug:
+    var: _utopia_sync_run.stdout_lines
+
+- name: Print repository sync script output
+  debug:
+    var: _utopia_sync_run.stderr_lines
+
+- name: Create cron job for utopia-sync.sh
+  cron:
+    name: "{{ branding_name }} repository sync"
+    # every 2 hours at minute 42
+    weekday: "*"
+    minute: "42"
+    hour: "*/2"
+    user: "{{ aptly_service_user }}"
+    job: "{{ _aptly_user.home }}/utopia-sync.sh > {{ _aptly_user.home }}/utopia-sync.log 2>&1"
