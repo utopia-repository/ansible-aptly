@@ -1,0 +1,13 @@
+- name: Install rsync daemon
+  apt:
+    package: rsync
+    state: present
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Template utopia-sync.sh
+  template:
+    src: "utopia-sync.sh.j2"
+    dest: "{{ _aptly_user.home }}/utopia-sync.sh"
+    mode: "0755"
+
+# TODO: cron job

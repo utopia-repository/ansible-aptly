@@ -1,0 +1,18 @@
+#!/bin/bash
+sync_target() {
+    repo="$1"
+    outdir="$2"
+    target=("rsync://{{ rsync_user }}@{{ rsync_master_host }}/${repo}" --password-file="$HOME/.rsync-aptly.key")
+    # Make sure to use -H here as aptly creates hard links when publishing!
+    rsync --verbose -aH --progress "${target[@]}" "$outdir" --delete-after
+
+    echo ""
+    echo "Writing last synced time to $outdir/.lastsync"
+    date -Ru | tee "$outdir/public/.lastsync"
+}
+
+sync_target "aptly-master" "{{ aptly_base_path }}"
+
+{% if nginx_web_base_path | default("") %}
+sync_target "aptly-web" "{{ nginx_web_base_path }}"
+{% endif %}
