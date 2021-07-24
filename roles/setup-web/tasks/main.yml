@@ -10,7 +10,15 @@
   git:
     repo: "{{ nginx_web_git_repo }}"
     dest: "{{ nginx_web_base_path }}"
+    update: yes
   when: (nginx_web_base_path | default("")) and (nginx_web_git_repo | default(""))
+  become_user: "{{ aptly_service_user }}"
+
+- name: Write mirrorinfo file
+  copy:
+    content: "{{ server_description }} - {{ inventory_hostname }}"
+    dest: "{{ nginx_web_base_path }}/mirrorinfo"
+  when: (nginx_web_base_path | default("")) and rsync_mirroring
   become_user: "{{ aptly_service_user }}"
 
 - name: Setup nginx web server

@@ -14,9 +14,10 @@ See `hosts.yml` and `group_vars/all.yml` for detailed configuration.
 ## Items NOT covered here
 
 - GnuPG signing keys (upload or generate these manually)
+- GeoDNS configuration lives in a [separate repository](https://github.com/jlu5/ansible-dn42/blob/main/geodns.yml)
 - TLS certificates for HTTPS support
   - This playbook creates an example config for [`certpush`](https://github.com/jlu5/certpush), a tool I built to bootstrap Let's Encrypt certificates for sites hosted from multiple backends.
-  - If you don't care about mirroring and only want a master server, any Let's Encrypt setup or external TLS certificate will do.
+  - If you don't care about mirroring and only want a single master server, any Let's Encrypt setup or external TLS certificate will do.
 - Cron jobs for [automation scripts](https://github.com/utopia-repository/utopia-scripts/) - these are generally very deployment specific
 
 ## TODO
