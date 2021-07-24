@@ -2,7 +2,7 @@
 sync_target() {
     repo="$1"
     outdir="$2"
-    target=("rsync://{{ rsync_user }}@{{ rsync_master_host }}/${repo}" --password-file="$HOME/.rsync-aptly.key" --exclude '*.sock')
+    target=("rsync://{{ rsync_user }}@{{ rsync_master_host }}/${repo}" --password-file="$HOME/.rsync-aptly.key" --exclude '*.sock' --exclude '.lastsync' --exclude 'mirrorinfo')
     # Make sure to use -H here as aptly creates hard links when publishing!
     rsync --verbose -aH --progress "${target[@]}" "$outdir" --delete-after
 
