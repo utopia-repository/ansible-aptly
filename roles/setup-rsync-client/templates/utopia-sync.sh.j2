@@ -4,11 +4,7 @@ sync_target() {
     outdir="$2"
     target=("rsync://{{ rsync_user }}@{{ rsync_master_host }}/${repo}" --password-file="$HOME/.rsync-aptly.key" --exclude '*.sock' --exclude '.lastsync' --exclude 'mirrorinfo')
     # Make sure to use -H here as aptly creates hard links when publishing!
-    rsync --verbose -aH --progress "${target[@]}" "$outdir" --delete-after
-
-    echo ""
-    echo "Writing last synced time to $outdir/.lastsync"
-    date -Ru | tee "$outdir/.lastsync"
+    rsync --verbose -aH --progress "${target[@]}" "$outdir" --delete-after && date -Ru | tee "$outdir/.lastsync"
 }
 
 sync_target "aptly-master" "{{ aptly_base_path }}"
