@@ -16,8 +16,10 @@ aptly_incoming_dists:
 - sid
 - sid-imports
 - sid-meta
-- buster
-- buster-imports
+- experimental
+- bullseye
+- bullseye-imports
+- bullseye-meta
 
 # Whether to enable the aptly api server
 aptly_api: true
