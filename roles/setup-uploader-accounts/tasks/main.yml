@@ -45,3 +45,10 @@
   loop: "{{ aptly_uploaders }}"
   loop_control:
     loop_var: userdef
+
+- name: Update aptly service user
+  user:
+    name: "{{ aptly_service_user }}"
+    groups:
+    - "{{ aptly_uploaders_group }}"
+    append: true

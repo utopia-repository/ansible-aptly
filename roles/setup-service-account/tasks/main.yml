@@ -7,7 +7,6 @@
   user:
     name: "{{ aptly_service_user }}"
     group: "{{ aptly_service_group }}"
-    groups: "{{ aptly_uploaders_group if 'repo_master' in group_names else '' }}"
     password_lock: true
     shell: "/bin/bash"
   register: _aptly_user
