@@ -12,7 +12,7 @@ KEY_NAME="privkey.pem"
 # List of DNS names to push to each server - addresses for each server are comma separated
 declare -A CERTPUSH_SERVERS=()
 {% for host in groups["repo_hosts"] %}
-CERTPUSH_SERVERS[{{ host }}]="{{ host }}"
+CERTPUSH_SERVERS[{{ hostvars[host].get("ansible_host", host) }}]="{{ host }}"
 {% endfor %}
 
 # Server specific scp options
