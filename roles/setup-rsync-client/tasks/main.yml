@@ -12,6 +12,15 @@
     group: "{{ aptly_service_group }}"
     mode: "0755"
 
+- name: Template repository sync script (local)
+  local_action:
+    module: template
+    src: "utopia-sync.sh.j2"
+    dest: "gen/utopia-sync.sh"
+    mode: "0755"
+  run_once: true
+  become: false
+
 - name: Write rsync password
   copy:
     content: "{{ rsync_pass }}"
