@@ -4,6 +4,7 @@ aptly_service_group: aptly
 
 # Note: much of utopia-scripts is hardcoded to assume /srv/aptly so far...
 aptly_base_path: "/srv/aptly"
+aptly_config_path: "/etc/aptly"
 
 # For uploads into aptly incoming folder
 aptly_uploaders_group: aptly-uploaders
@@ -36,7 +37,7 @@ nginx_server_names_redirect:
 
 nginx_use_https: true
 # Path to read SSL certs from.
-nginx_ssl_dir: "/etc/aptly/ssl"
+nginx_ssl_dir: "{{ aptly_config_path }}/ssl"
 nginx_ssl_dir_owner: ""  # Defaults to the login user for Ansible
 nginx_ssl_dir_group: "root"
 nginx_ssl_cert: "{{ nginx_ssl_dir }}/fullchain.pem"

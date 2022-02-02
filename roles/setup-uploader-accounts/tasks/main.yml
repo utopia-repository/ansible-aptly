@@ -1,7 +1,7 @@
 - name: Template aptly incoming uploaders config
   copy:
     src: "aptly-uploaders.conf"
-    dest: "/etc/aptly-uploaders.conf"
+    dest: "/etc/aptly/uploaders.conf"
     mode: "0640"
     group: "{{ aptly_service_group }}"
 

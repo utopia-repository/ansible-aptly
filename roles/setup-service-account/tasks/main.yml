@@ -17,3 +17,11 @@
     state: directory
     owner: "{{ aptly_service_user }}"
     group: "{{ aptly_service_group }}"
+
+- name: Create aptly config folder
+  file:
+    path: "{{ aptly_config_path }}"
+    state: directory
+    owner: "{{ aptly_service_user }}"
+    group: "{{ aptly_service_group }}"
+    mode: "0750"
