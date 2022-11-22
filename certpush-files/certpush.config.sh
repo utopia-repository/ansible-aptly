@@ -11,7 +11,7 @@ KEY_NAME="privkey.pem"
 
 # List of DNS names to push to each server - addresses for each server are comma separated
 declare -A CERTPUSH_SERVERS=()
-CERTPUSH_SERVERS[lax02.jlu5.com]="deb-master.utopia-repository.org"
+CERTPUSH_SERVERS[15.235.106.198]="deb-master.utopia-repository.org"
 CERTPUSH_SERVERS[ams02.jlu5.com]="deb2.utopia-repository.org"
 
 # Server specific scp options
