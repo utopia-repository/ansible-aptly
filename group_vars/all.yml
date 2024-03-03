@@ -18,9 +18,9 @@ aptly_incoming_dists:
 - sid-imports
 - sid-meta
 - experimental
-- bullseye
-- bullseye-imports
-- bullseye-meta
+- bookworm
+- bookworm-imports
+- bookworm-meta
 
 # Whether to enable the aptly api server
 aptly_api: true
