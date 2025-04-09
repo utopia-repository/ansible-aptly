@@ -22,35 +22,8 @@ aptly_incoming_dists:
 - bookworm-imports
 - bookworm-meta
 
-# Whether to enable the aptly api server
-aptly_api: true
-aptly_api_socket: "{{ aptly_base_path }}/aptly.sock"
-aptly_api_umask: "007" # rw-rw----
-
-# server_name entries for nginx
-nginx_server_names:
-  - deb.utopia-repository.org
-  - ni.deb.utopia-repository.org  # nightlies
-nginx_server_names_redirect:
-  - utopia-repository.org
-  - www.utopia-repository.org
-
-nginx_use_https: true
-# Path to read SSL certs from.
-nginx_ssl_dir: "{{ aptly_config_path }}/ssl"
-nginx_ssl_dir_owner: ""  # Defaults to the login user for Ansible
-nginx_ssl_dir_group: "root"
-nginx_ssl_cert: "{{ nginx_ssl_dir }}/fullchain.pem"
-nginx_ssl_key: "{{ nginx_ssl_dir }}/privkey.pem"
-
-# (optional) nginx web root for the repo; use this if you want to have a more friendly homepage
-# dists/ and pool/ (used for the actual apt contents) are aliased into "{{ aptly_base_path }}/public",
-# so they should work out of the box
-nginx_web_base_path: /srv/aptly-web
-nginx_web_git_repo: https://github.com/utopia-repository/website
-
 # Whether to enable mirroring with rsync
-rsync_mirroring: true
+rsync_mirroring: false
 rsync_user: "{{ aptly_service_user }}"
 rsync_pass: !vault |
   $ANSIBLE_VAULT;1.1;AES256

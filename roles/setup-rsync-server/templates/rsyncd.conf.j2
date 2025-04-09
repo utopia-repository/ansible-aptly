@@ -16,10 +16,3 @@
 {% endmacro %}
 
 {{ write_block("aptly-master", aptly_base_path, branding_name + " master" ) }}
-
-{{ write_block("aptly-incoming", aptly_incoming_path, branding_name + " incoming files" ) }}
-
-{% if nginx_web_base_path | default("") %}
-{{ write_block("aptly-web", nginx_web_base_path, branding_name + " static web files" ) }}
-{% endif %}
-

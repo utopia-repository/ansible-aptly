@@ -23,5 +23,5 @@
     path: "{{ aptly_config_path }}"
     state: directory
     owner: "{{ aptly_service_user }}"
-    group: "staff"  # for certpush access
+    group: "{{ aptly_service_group }}"
     mode: "0750"
