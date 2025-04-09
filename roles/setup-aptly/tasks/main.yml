@@ -7,6 +7,7 @@
     - gnupg
     - graphviz
     # Used by automation scripts
+    - dose-distcheck
     - python3-requests
     - python3-requests-unixsocket
     - python3-yaml
